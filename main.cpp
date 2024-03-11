@@ -241,11 +241,69 @@ void Test2()
     }
 }
 
+void Test3()
+{
+    // проверка операции ==
+    SingleLinkedList<int> list1;
+    SingleLinkedList<int> list2;
+    list1.PushFront(2);
+    list1.PushFront(5);
+    list1.PushFront(8);
+
+    list2.PushFront(2);
+    list2.PushFront(5);
+    list2.PushFront(8);
+
+    assert(list1 == list2);
+    list1.Clear();
+    list2.Clear();
+
+    // проверка операции !=
+    list1.PushFront(2);
+    list1.PushFront(9);
+    list1.PushFront(3);
+
+    list2.PushFront(2);
+    list2.PushFront(5);
+    list2.PushFront(8);
+
+    assert(list1 != list2);
+    list1.Clear();
+    list2.Clear();
+
+    // проверка операции <
+    list1.PushFront(1);
+    list1.PushFront(2);
+    list1.PushFront(3);
+
+    list2.PushFront(1);
+    list2.PushFront(2);
+    list2.PushFront(4);
+
+    assert(list1 < list2);
+    list1.Clear();
+    list2.Clear();
+
+    // проверка операции >
+    list2.PushFront(1);
+    list2.PushFront(2);
+    list2.PushFront(3);
+
+    list1.PushFront(1);
+    list1.PushFront(2);
+    list1.PushFront(4);
+
+    assert(list1 > list2);
+    list1.Clear();
+    list2.Clear();
+}
+
 int main()
 {
     //Test0();
     //Test1();
-    Test2();
+    //Test2();
+    Test3();
 
     std::cout << "Test OK" << std::endl;
 }

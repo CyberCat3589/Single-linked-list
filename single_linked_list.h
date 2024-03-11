@@ -1,5 +1,6 @@
 #include <cstddef>
 #include <iterator>
+#include <algorithm>
 
 template <typename Type> 
 class SingleLinkedList
@@ -221,3 +222,39 @@ class SingleLinkedList
     Node head_ = Node();
     size_t size_ = 0;
 };
+
+template <typename Type>
+bool operator==(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+{
+    return std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend());
+}
+
+template <typename Type>
+bool operator!=(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+{
+    return lhs == rhs ? false : true;
+}
+
+template <typename Type> 
+bool operator<(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+{
+    return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend());
+}
+
+template <typename Type> 
+bool operator>(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+{
+    return std::lexicographical_compare(rhs.cbegin(), rhs.cend(), lhs.cbegin(), lhs.cend());
+}
+
+template <typename Type>
+bool operator<=(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+{
+    return (lhs < rhs) || (lhs == rhs);
+}
+
+template <typename Type> 
+bool operator>=(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+{
+    return (lhs > rhs) || (lhs == rhs);
+}
