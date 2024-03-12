@@ -296,6 +296,49 @@ void Test3()
     assert(list1 > list2);
     list1.Clear();
     list2.Clear();
+
+    // Обмен содержимого списков
+    {
+        SingleLinkedList<int> first;
+        first.PushFront(1);
+        first.PushFront(2);
+
+        SingleLinkedList<int> second;
+        second.PushFront(10);
+        second.PushFront(11);
+        second.PushFront(15);
+
+        const auto old_first_begin = first.begin();
+        const auto old_second_begin = second.begin();
+        const auto old_first_size = first.GetSize();
+        const auto old_second_size = second.GetSize();
+
+        first.swap(second);
+
+        assert(second.begin() == old_first_begin);
+        assert(first.begin() == old_second_begin);
+        assert(second.GetSize() == old_first_size);
+        assert(first.GetSize() == old_second_size);
+
+        // Обмен при помощи функции swap
+        {
+            using std::swap;
+
+            // В отсутствие пользовательской перегрузки будет вызвана функция std::swap, которая
+            // выполнит обмен через создание временной копии
+            swap(first, second);
+
+            // Убеждаемся, что используется не std::swap, а пользовательская перегрузка
+
+            // Если бы обмен был выполнен с созданием временной копии,
+            // то итератор first.begin() не будет равен ранее сохранённому значению,
+            // так как копия будет хранить свои узлы по иным адресам
+            assert(first.begin() == old_first_begin);
+            assert(second.begin() == old_second_begin);
+            assert(first.GetSize() == old_first_size);
+            assert(second.GetSize() == old_second_size);
+        }
+    }
 }
 
 int main()

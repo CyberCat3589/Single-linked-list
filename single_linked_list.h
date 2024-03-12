@@ -1,6 +1,8 @@
+#pragma once
 #include <cstddef>
 #include <iterator>
 #include <algorithm>
+#include <initializer_list>
 
 template <typename Type> 
 class SingleLinkedList
@@ -159,6 +161,18 @@ class SingleLinkedList
         size_ = 0;
     }
 
+    void swap(SingleLinkedList<Type>& other)
+    {
+        size_t temp_size = this->size_;
+        auto temp_ptr = this->head_.next_node;
+
+        this->head_.next_node = other.head_.next_node;
+        other.head_.next_node = temp_ptr;
+
+        this->size_ = other.size_;
+        other.size_ = temp_size;
+    }
+
     using value_type = Type;
     using reference = value_type&;
     using const_reference = const value_type&;
@@ -222,6 +236,12 @@ class SingleLinkedList
     Node head_ = Node();
     size_t size_ = 0;
 };
+
+template <typename Type>
+void swap(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+{
+    lhs.swap(rhs);
+}
 
 template <typename Type>
 bool operator==(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
