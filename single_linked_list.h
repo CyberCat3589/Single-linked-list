@@ -128,22 +128,23 @@ class SingleLinkedList
 
     SingleLinkedList(std::initializer_list<Type> init_list)
     {
+        // временная копия передаваемого контейнера
         SingleLinkedList tmp;
-        SingleLinkedList  tmp2;
+        GetCopy(init_list, tmp);
 
-        // передаём значения во временный список(порядок инвертируется относительно init_list)
-        for(auto it = init_list.begin(); it != init_list.end(); it++)
-        {
-            tmp.PushFront(*it);
-        }
+        // обмен значениями между копией и текущим объектом
+        this->swap(tmp);
+    }
 
-        // передаём значения во второй временный список(порядок снова инвертируется и становится аналогичным init_list)
-        for(auto it = tmp.begin(); it != tmp.end(); it++)
-        {
-            tmp2.PushFront(*it);
-        }
-
-        this->swap(tmp2);
+    SingleLinkedList(const SingleLinkedList& other)
+    {
+        assert((size_ == 0) && (head_.next_node == nullptr));
+        
+        // временная копия передаваемого контейнера
+        SingleLinkedList tmp;
+        GetCopy(other, tmp);
+        // обмен значениями между копией и текущим объектом
+        this->swap(tmp);
     }
 
     ~SingleLinkedList()
@@ -191,6 +192,13 @@ class SingleLinkedList
 
         this->size_ = other.size_;
         other.size_ = temp_size;
+    }
+
+    SingleLinkedList& operator=(const SingleLinkedList& rhs)
+    {
+        SingleLinkedList tmp = rhs;
+        this->swap(tmp);
+        return *this;
     }
 
     using value_type = Type;
@@ -255,6 +263,27 @@ class SingleLinkedList
   private:
     Node head_ = Node();
     size_t size_ = 0;
+
+    template <typename Container>
+    void GetCopy(const Container& init_container, SingleLinkedList& result)
+    {
+        SingleLinkedList tmp;
+        SingleLinkedList tmp2;
+
+        // передаём значения во временный список(порядок инвертируется относительно init_list)
+        for (auto it = init_container.begin(); it != init_container.end(); it++)
+        {
+            tmp.PushFront(*it);
+        }
+
+        // передаём значения во второй временный список(порядок снова инвертируется и становится аналогичным init_list)
+        for (auto it = tmp.begin(); it != tmp.end(); it++)
+        {
+            tmp2.PushFront(*it);
+        }
+
+        result.swap(tmp2);
+    }
 };
 
 template <typename Type>
@@ -263,38 +292,38 @@ void swap(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
     lhs.swap(rhs);
 }
 
-template <typename Type>
-bool operator==(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+template <typename Type> 
+bool operator==(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs)
 {
     return std::equal(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend());
 }
 
-template <typename Type>
-bool operator!=(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+template <typename Type> 
+bool operator!=(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs)
 {
     return lhs == rhs ? false : true;
 }
 
 template <typename Type> 
-bool operator<(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+bool operator<(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs)
 {
     return std::lexicographical_compare(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend());
 }
 
 template <typename Type> 
-bool operator>(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+bool operator>(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs)
 {
     return std::lexicographical_compare(rhs.cbegin(), rhs.cend(), lhs.cbegin(), lhs.cend());
 }
 
-template <typename Type>
-bool operator<=(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+template <typename Type> 
+bool operator<=(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs)
 {
     return (lhs < rhs) || (lhs == rhs);
 }
 
 template <typename Type> 
-bool operator>=(SingleLinkedList<Type>& lhs, SingleLinkedList<Type>& rhs)
+bool operator>=(const SingleLinkedList<Type>& lhs, const SingleLinkedList<Type>& rhs)
 {
     return (lhs > rhs) || (lhs == rhs);
 }
