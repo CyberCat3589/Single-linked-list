@@ -339,6 +339,14 @@ void Test3()
             assert(second.GetSize() == old_second_size);
         }
     }
+
+    // Инициализация списка при помощи std::initializer_list
+    {
+        SingleLinkedList<int> list{1, 2, 3, 4, 5};
+        assert(list.GetSize() == 5);
+        assert(!list.IsEmpty());
+        assert(std::equal(list.begin(), list.end(), std::begin({1, 2, 3, 4, 5})));
+    }
 }
 
 int main()

@@ -126,6 +126,26 @@ class SingleLinkedList
   public:
     SingleLinkedList() = default;
 
+    SingleLinkedList(std::initializer_list<Type> init_list)
+    {
+        SingleLinkedList tmp;
+        SingleLinkedList  tmp2;
+
+        // передаём значения во временный список(порядок инвертируется относительно init_list)
+        for(auto it = init_list.begin(); it != init_list.end(); it++)
+        {
+            tmp.PushFront(*it);
+        }
+
+        // передаём значения во второй временный список(порядок снова инвертируется и становится аналогичным init_list)
+        for(auto it = tmp.begin(); it != tmp.end(); it++)
+        {
+            tmp2.PushFront(*it);
+        }
+
+        this->swap(tmp2);
+    }
+
     ~SingleLinkedList()
     {
         Clear();
