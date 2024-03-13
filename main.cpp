@@ -437,13 +437,15 @@ void Test3()
 void Test4()
 {
     //проверка удаления первого элемента списка
-    SingleLinkedList<int> list = {1,2,3,4};
-    list.PopFront();
-    assert(list.GetSize() == 3);
-    assert(*(list.begin()) == 2);
-    list.PopFront();
-    assert(list.GetSize() == 2);
-    assert(*(list.begin()) == 3);
+    {
+        SingleLinkedList<int> list = {1,2,3,4};
+        list.PopFront();
+        assert(list.GetSize() == 3);
+        assert(*(list.begin()) == 2);
+        list.PopFront();
+        assert(list.GetSize() == 2);
+        assert(*(list.begin()) == 3);
+    }
 }
 
 int main()

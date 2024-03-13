@@ -128,23 +128,14 @@ class SingleLinkedList
 
     SingleLinkedList(std::initializer_list<Type> init_list)
     {
-        // временная копия передаваемого контейнера
-        SingleLinkedList tmp;
-        GetCopy(init_list, tmp);
-
-        // обмен значениями между копией и текущим объектом
-        this->swap(tmp);
+        Assign(init_list);
     }
 
     SingleLinkedList(const SingleLinkedList& other)
     {
         assert((size_ == 0) && (head_.next_node == nullptr));
         
-        // временная копия передаваемого контейнера
-        SingleLinkedList tmp;
-        GetCopy(other, tmp);
-        // обмен значениями между копией и текущим объектом
-        this->swap(tmp);
+        Assign(other);
     }
 
     ~SingleLinkedList()
@@ -247,8 +238,7 @@ class SingleLinkedList
     // Разыменовывать этот итератор нельзя — попытка разыменования приведёт к неопределённому поведению
     [[nodiscard]] Iterator end() noexcept 
     {
-        Node* null_node = nullptr;
-        return Iterator(null_node);
+        return Iterator(nullptr);
     }
 
     // Возвращает константный итератор, ссылающийся на первый элемент
@@ -263,8 +253,7 @@ class SingleLinkedList
     // Разыменовывать этот итератор нельзя — попытка разыменования приведёт к неопределённому поведению
     [[nodiscard]] ConstIterator cend() const noexcept 
     {
-        Node* null_node = nullptr;
-        return ConstIterator(null_node);
+        return ConstIterator(nullptr);
     }
 
     // Возвращает константный итератор, ссылающийся на первый элемент
@@ -288,7 +277,7 @@ class SingleLinkedList
     size_t size_ = 0;
 
     template <typename Container>
-    void GetCopy(const Container& init_container, SingleLinkedList& result)
+    void Assign(const Container& init_container)
     {
         SingleLinkedList tmp;
         SingleLinkedList tmp2;
@@ -305,7 +294,7 @@ class SingleLinkedList
             tmp2.PushFront(*it);
         }
 
-        result.swap(tmp2);
+        swap(tmp2);
     }
 };
 
