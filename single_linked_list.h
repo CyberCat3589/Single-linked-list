@@ -210,6 +210,23 @@ class SingleLinkedList
     // Константный итератор, предоставляющий доступ для чтения к элементам списка
     using ConstIterator = BasicIterator<const Type>;
 
+    // Возвращает константный итератор, указывающий на позицию перед первым элементом односвязного списка.
+    // Разыменовывать этот итератор нельзя - попытка разыменования приведёт к неопределённому поведению
+    [[nodiscard]] Iterator before_begin() noexcept
+    {
+        return Iterator(&head_);
+    }
+
+    [[nodiscard]] ConstIterator cbefore_begin() noexcept
+    {
+        return ConstIterator(const_cast<Node*>(&head_));
+    }
+
+    [[nodiscard]] ConstIterator before_begin() const noexcept
+    {
+        return cbefore_begin();
+    }
+
     // Возвращает итератор, ссылающийся на первый элемент
     // Если список пустой, возвращённый итератор будет равен end()
     [[nodiscard]] Iterator begin() noexcept
@@ -227,24 +244,6 @@ class SingleLinkedList
     }
 
     // Возвращает константный итератор, ссылающийся на первый элемент
-    // Если список пустой, возвращённый итератор будет равен end()
-    // Результат вызова эквивалентен вызову метода cbegin()
-    [[nodiscard]] ConstIterator begin() const noexcept 
-    {
-        if(size_ == 0) return end();
-        return ConstIterator(head_.next_node);
-    }
-
-    // Возвращает константный итератор, указывающий на позицию, следующую за последним элементом односвязного списка
-    // Разыменовывать этот итератор нельзя — попытка разыменования приведёт к неопределённому поведению
-    // Результат вызова эквивалентен вызову метода cend()
-    [[nodiscard]] ConstIterator end() const noexcept 
-    {
-        Node* null_node = nullptr;
-        return ConstIterator(null_node);
-    }
-
-    // Возвращает константный итератор, ссылающийся на первый элемент
     // Если список пустой, возвращённый итератор будет равен cend()
     [[nodiscard]] ConstIterator cbegin() const noexcept 
     {
@@ -258,6 +257,22 @@ class SingleLinkedList
     {
         Node* null_node = nullptr;
         return ConstIterator(null_node);
+    }
+
+    // Возвращает константный итератор, ссылающийся на первый элемент
+    // Если список пустой, возвращённый итератор будет равен end()
+    // Результат вызова эквивалентен вызову метода cbegin()
+    [[nodiscard]] ConstIterator begin() const noexcept 
+    {
+        return cbegin();
+    }
+
+    // Возвращает константный итератор, указывающий на позицию, следующую за последним элементом односвязного списка
+    // Разыменовывать этот итератор нельзя — попытка разыменования приведёт к неопределённому поведению
+    // Результат вызова эквивалентен вызову метода cend()
+    [[nodiscard]] ConstIterator end() const noexcept 
+    {
+        return cend();
     }
 
   private:
