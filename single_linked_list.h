@@ -170,6 +170,14 @@ class SingleLinkedList
         ++size_;
     }
 
+    void PopFront() noexcept
+    {
+        Node* del_item = head_.next_node;
+        head_.next_node = del_item->next_node;
+        delete del_item;
+        --size_;
+    }
+
     void Clear() noexcept
     {
         while (head_.next_node != nullptr)
