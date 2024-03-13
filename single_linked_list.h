@@ -143,6 +143,15 @@ class SingleLinkedList
         Clear();
     }
 
+    using value_type = Type;
+    using reference = value_type&;
+    using const_reference = const value_type&;
+
+    // Итератор, допускающий изменение элементов списка
+    using Iterator = BasicIterator<Type>;
+    // Константный итератор, предоставляющий доступ для чтения к элементам списка
+    using ConstIterator = BasicIterator<const Type>;
+
     // Возвращает количество элементов в списке
     [[nodiscard]] size_t GetSize() const noexcept
     {
@@ -161,12 +170,30 @@ class SingleLinkedList
         ++size_;
     }
 
+    Iterator InsertAfter(ConstIterator pos, const Type& value)
+    {
+        assert(pos.node_ != nullptr);
+
+        pos.node_->next_node = new Node(value, pos.node_->next_node);
+        ++size_;
+        return Iterator(pos.node_->next_node);
+    }
+
     void PopFront() noexcept
     {
         Node* del_item = head_.next_node;
         head_.next_node = del_item->next_node;
         delete del_item;
         --size_;
+    }
+
+    Iterator EraseAfter(ConstIterator pos) noexcept
+    {
+        Node* del_item = pos.node_->next_node;
+        pos.node_->next_node = del_item->next_node;
+        delete del_item;
+        --size_;
+        return Iterator(pos.node_->next_node);
     }
 
     void Clear() noexcept
@@ -200,15 +227,6 @@ class SingleLinkedList
         return *this;
     }
 
-    using value_type = Type;
-    using reference = value_type&;
-    using const_reference = const value_type&;
-
-    // Итератор, допускающий изменение элементов списка
-    using Iterator = BasicIterator<Type>;
-    // Константный итератор, предоставляющий доступ для чтения к элементам списка
-    using ConstIterator = BasicIterator<const Type>;
-
     // Возвращает константный итератор, указывающий на позицию перед первым элементом односвязного списка.
     // Разыменовывать этот итератор нельзя - попытка разыменования приведёт к неопределённому поведению
     [[nodiscard]] Iterator before_begin() noexcept
@@ -216,7 +234,7 @@ class SingleLinkedList
         return Iterator(&head_);
     }
 
-    [[nodiscard]] ConstIterator cbefore_begin() noexcept
+    [[nodiscard]] ConstIterator cbefore_begin() const noexcept
     {
         return ConstIterator(const_cast<Node*>(&head_));
     }
